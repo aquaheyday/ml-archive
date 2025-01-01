@@ -1,3 +1,6 @@
+# 미리보기
+url : https://aquaheyday.github.io/web/mnist_cnn_model
+
 ## 1. Import Packages
 사용할 패키지를 가져옵니다.
 ```python
