@@ -96,6 +96,16 @@ model = Sequential([
     Dense(10, activation='softmax')
 ])
 ```
+Sequential(): 레이어를 순차적으로 쌓아 올리는 방식의 신경망입니다.  
+Input(shape=(28, 28, 1)): 입력 데이터는 28x28 픽셀 크기의 흑백 이미지(1채널) 입니다.  
+Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)): 2개의 필터를 사용하여 이미지를 3x3 크기로 스캔하며 특징을 추출합니다. (28, 28, 1) → (26, 26, 32) 패딩이 없어서 출력 크기가 감소  
+MaxPooling2D((2, 2)): 2x2 영역에서 최댓값을 선택하여 특징 맵을 축소합니다. 26, 26, 32) → (13, 13, 32)  
+Dropout(0.25): 노드를 25% 랜덤으로 비활성화하여 과적합(overfitting)을 방지  
+Conv2D(64, (3, 3), activation='relu'): 64개의 필터를 사용하여 특징을 더 정교하게 추출합니다. (13, 13, 32) → (11, 11, 64)  
+MaxPooling2D((2, 2)): (11, 11, 64) → (5, 5, 64)  
+Flatten(): 3D 텐서(5, 5, 64)를 1D 벡터로 변환합니다. (Dense로 데이터를 입력하기 위해 필요)  
+Dense(128, activation='relu'): 128개의 뉴런을 가지는 완전 연결 레이어이며 relu 활성화 함수로 비선형성을 추가합니다.  
+Dense(10, activation='softmax'): 출력층은 10개의 뉴런을 가지며, 이는 10개의 클래스(예: 숫자 0~9)의 확률을 출력합니다.(Softmax 활성화 함수를 사용해 출력값을 확률로 변환)
 
 ### 6. 모델 컴파일
 
@@ -106,6 +116,10 @@ model.compile(
   metrics=['accuracy']
 )
 ```
+
+optimizer='adam': adam은 경사 하강법의 변형된 형태로 학습 속도와 효율성이 뛰어납니다.  
+loss='categorical_crossentropy': 손실 함수를 지정합니다.  
+metrics=['accuracy']: 모델 학습 동안 평가 지표로 정확도를 사용합니다.
 
 ### 7. 콜백 정의
 
