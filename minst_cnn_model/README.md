@@ -130,6 +130,16 @@ callbacks = [
     TensorBoard(log_dir='./logs')
 ]
 ```
+EarlyStopping  
+monitor='val_loss': 검 데이터(val_loss)의 손실을 관찰하여 조기 종료 여부를 결정합니다.  
+patience=5: val_loss가 개선되지 않더라도 몇 번의 에포크(5번) 동안 더 기다렸다가 종료합니다.  
+restore_best_weights=True: 조기 종료된 시점의 모델이 아니라, 가장 낮은 val_loss를 기록한 모델의 가중치로 복원합니다.  
+ModelCheckpoint  
+"best_model.keras": 가장 성능이 좋은 모델을 저장할 파일 이름입니다.  
+save_best_only=True: 새로운 검증 손실(val_loss)이 이전보다 낮아질 때만 모델을 저장합니다.  
+monitor='val_loss': val_loss를 기준으로 성능 개선 여부를 판단합니다.  
+TensorBoard  
+log_dir='./logs': 로그 파일을 저장할 디렉터리 경로입니다. 나중에 TensorBoard를 실행할 때 이 디렉터리를 참조합니다.
 
 ### 8. 모델 학습
 
@@ -142,6 +152,12 @@ history = model.fit(
     steps_per_epoch=len(x_train) // 32
 )
 ```
+datagen.flow(x_train, y_train, batch_size=32): 데이터 증강(generator)을 통해 학습 데이터를 실시간으로 변환하여 모델에 제공합니다.  
+validation_data=(x_val, y_val): 검증 데이터를 사용하여 모델 성능을 평가합니다.  
+epochs=50: 훈련을 최대 50 에포크(epoch) 동안 진행합니다.  
+callbacks=callbacks: 훈련중 callback 을 실행하비다.  
+steps_per_epoch=len(x_train): 에포크당 배치(batch)의 수를 지정합니다  
+history: 훈련 과정의 로그가 저장됩니다.
 
 ### 9. 모델 평가
 
@@ -149,6 +165,8 @@ history = model.fit(
 test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
 print(f"\nTest accuracy: {test_acc}")
 ```
+
+model.evaluate(x_test, y_test, verbose=2): 학습된 모델이 테스트 데이터(x_test, y_test)에 대해 손실(loss)과 정확도(accuracy)를 계산합니다.
 
 ### 10. 학습 결과 시각화
 
